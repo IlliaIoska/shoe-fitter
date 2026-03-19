@@ -1,1 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShapeFit — Custom Footwear Visualizer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+  <header>
+    <div class="logo">ShapeFit<span class="logo-dot">.</span></div>
+    <div class="tagline">Precision footwear visualization</div>
+  </header>
 
+  <main>
+    <!-- LEFT PANEL: Inputs -->
+    <aside class="panel-left">
+      <section class="input-section">
+        <h2 class="section-title">Footwear Type</h2>
+        <div class="shoe-grid">
+          {% for key, label in shoe_options.items() %}
+          <button class="shoe-btn" data-type="{{ key }}">{{ label }}</button>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="input-section">
+        <h2 class="section-title">Unit System</h2>
+        <div class="unit-toggle">
+          <button class="unit-btn active" data-unit="cm">cm</button>
+          <button class="unit-btn" data-unit="in">in</button>
+        </div>
+      </section>
+
+      <section class="input-section">
+        <h2 class="section-title">Foot Measurements</h2>
+        <div class="measurements-grid">
+          <div class="measure-group">
+            <label>Foot Length</label>
+            <input type="number" id="length" step="0.1" placeholder="25.0" />
+          </div>
+          <div class="measure-group">
+            <label>Foot Width</label>
+            <input type="number" id="width" step="0.1" placeholder="9.5" />
+          </div>
+          <div class="measure-group">
+            <label>Ball Circumference</label>
+            <input type="number" id="ball_circ" step="0.1" placeholder="23.0" />
+          </div>
+          <div class="measure-group">
+            <label>Waist Circumference</label>
+            <input type="number" id="waist_circ" step="0.1" placeholder="21.5" />
+          </div>
+          <div class="measure-group">
+            <label>Instep Circumference</label>
+            <input type="number" id="instep_circ" step="0.1" placeholder="24.0" />
+          </div>
+          <div class="measure-group">
+            <label>Heel Circumference</label>
+            <input type="number" id="heel_circ" step="0.1" placeholder="32.0" />
+          </div>
+          <div class="measure-group">
+            <label>Ankle Circumference</label>
+            <input type="number" id="ankle_circ" step="0.1" placeholder="22.5" />
+          </div>
+          <div class="measure-group">
+            <label>Calf Circumference</label>
+            <input type="number" id="calf_circ" step="0.1" placeholder="36.0" />
+          </div>
+        </div>
+      </section>
+
+      <button class="generate-btn" id="generateBtn">
+        <span class="btn-text">Generate 3D Model</span>
+        <span class="btn-arrow">→</span>
+      </button>
+
+      <div class="error-msg" id="errorMsg"></div>
+    </aside>
+
+    <!-- RIGHT PANEL: 3D Viewer -->
+    <section class="panel-right">
+      <div class="viewer-header">
+        <div class="view-toggle">
+          <button class="view-btn active" id="btnExterior">Exterior</button>
+          <button class="view-btn" id="btnInterior">Interior / Section</button>
+        </div>
+        <div class="viewer-hint" id="viewerHint">Enter measurements and click Generate</div>
+      </div>
+
+      <div class="canvas-wrap">
+        <canvas id="shoeCanvas"></canvas>
+        <div class="loading-overlay" id="loadingOverlay">
+          <div class="spinner"></div>
+          <div class="loading-text">Computing fit…</div>
+        </div>
+        <div class="placeholder-msg" id="placeholderMsg">
+          <div class="placeholder-icon">👟</div>
+          <div>Your 3D model will appear here</div>
+        </div>
+      </div>
+
+      <div class="stats-bar" id="statsBar" style="display:none">
+        <div class="stat"><span class="stat-label">Length</span><span class="stat-val" id="statLength">—</span></div>
+        <div class="stat"><span class="stat-label">Width</span><span class="stat-val" id="statWidth">—</span></div>
+        <div class="stat"><span class="stat-label">Shaft</span><span class="stat-val" id="statShaft">—</span></div>
+        <div class="stat"><span class="stat-label">Type</span><span class="stat-val" id="statType">—</span></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="{{ url_for('static', filename='js/viewer.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
